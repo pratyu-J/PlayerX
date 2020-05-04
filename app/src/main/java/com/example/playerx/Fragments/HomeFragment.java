@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Environment;
@@ -49,7 +50,6 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         musicList = v.findViewById(R.id.list);
-
 
         return v;
     }
@@ -95,7 +95,7 @@ public class HomeFragment extends Fragment {
     @SuppressLint("NewApi")
     public boolean isPermissionDenied(){
         for( int i= 0; i< PERMISSION_COUNT; i++ ){
-            if(getActivity().checkSelfPermission(PERMISSIONS[i]) != PackageManager.PERMISSION_GRANTED){
+            if(ActivityCompat.checkSelfPermission(getContext(),android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
                 return true;
             }
 
