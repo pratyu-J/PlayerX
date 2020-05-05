@@ -38,7 +38,7 @@ public class HomeFragment extends Fragment {
 
     private boolean isPlayerInit;
     // MusicListAdapter adapter = new MusicListAdapter();
-    public List<File> musicFiles= new ArrayList<>();
+    public static List<File> musicFiles= new ArrayList<>();
 
     public HomeFragment() {
         // Required empty public constructor
@@ -133,6 +133,8 @@ public class HomeFragment extends Fragment {
             isPlayerInit = true;
         }
     }
+
+
 
 
 }

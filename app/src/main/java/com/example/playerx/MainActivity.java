@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import com.example.playerx.Fragments.HomeFragment;
 import com.example.playerx.Fragments.LikedFragment;
 import com.example.playerx.Fragments.SearchFragment;
+import com.example.playerx.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
