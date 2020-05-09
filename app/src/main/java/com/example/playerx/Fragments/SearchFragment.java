@@ -4,16 +4,26 @@ package com.example.playerx.Fragments;
 import android.os.Bundle;
 
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
 
 import com.example.playerx.Adapters.MusicListAdapter;
 import com.example.playerx.R;
@@ -22,16 +32,17 @@ import com.example.playerx.R;
 import static com.example.playerx.Fragments.HomeFragment.musicFiles;
 
 
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements MenuItem.OnActionExpandListener{
     Button search;
     EditText song_to_find;
     String song;
-    ListView ResList;
+    RecyclerView ResList;
+    RecyclerView.LayoutManager layoutManager;
 
     String[] items;
     String[] res_songs;
     int same=0;
-
+    MusicListAdapter musicListAdapter;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -43,18 +54,29 @@ public class SearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_search, container, false);
 
-        search = v.findViewById(R.id.searchButton);
-        song_to_find = v.findViewById(R.id.song_search);
+/*        search = v.findViewById(R.id.searchButton);
+        song_to_find = v.findViewById(R.id.song_search);*/
         ResList = v.findViewById(R.id.res_list);
+        layoutManager = new LinearLayoutManager(getActivity());
+        musicListAdapter = new MusicListAdapter(getActivity(), HomeFragment.items);
+        ResList.setLayoutManager(layoutManager);
+        ResList.setAdapter(musicListAdapter);
+        Toolbar toolbar = v.findViewById(R.id.toolbar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        toolbar.setTitle("Search ");
 
-        items = new String[musicFiles.size()];
+        setHasOptionsMenu(true);
+
+        /*items = new String[musicFiles.size()];
         for (int i = 0; i < musicFiles.size(); i++) {
 
             items[i] = musicFiles.get(i).getName().toString().replace(".mp3", "");
 
-        }
+        }*/
 
-        search.setOnClickListener(new View.OnClickListener() {
+        setMenuVisibility(true);
+
+/*        search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 song = song_to_find.getText().toString();
@@ -74,13 +96,48 @@ public class SearchFragment extends Fragment {
                     }
                 }
 
-                MusicListAdapter musicListAdapter = new MusicListAdapter(getActivity(), res_songs);
-                ResList.setAdapter(musicListAdapter);
+*//*                musicListAdapter = new MusicListAdapter(getActivity(), res_songs);
+                ResList.setAdapter(musicListAdapter);*//*
 
             }
-        });
+        });*/
 
         return v;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+
+        inflater.inflate(R.menu.search_expand, menu);
+
+        SearchView searchView = (SearchView) menu.findItem(R.id.expSearch).getActionView();
+
+        super.onCreateOptionsMenu(menu, inflater);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                musicListAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int id = item.getItemId();
+
+        if(id == R.id.expSearch){
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     static boolean isSubstring(String s1, String s2) {
@@ -104,6 +161,16 @@ public class SearchFragment extends Fragment {
         return false;
     }
 
+
+    @Override
+    public boolean onMenuItemActionExpand(MenuItem item) {
+        return false;
+    }
+
+    @Override
+    public boolean onMenuItemActionCollapse(MenuItem item) {
+        return false;
+    }
 
 
 }

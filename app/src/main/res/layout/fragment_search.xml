@@ -8,7 +8,13 @@
 
     tools:context=".Fragments.SearchFragment">
 
-    <LinearLayout
+<androidx.appcompat.widget.Toolbar
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/toolbar"
+    android:background="@color/design_default_color_primary"/>
+
+<!--    <LinearLayout
         android:padding="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,26 +29,23 @@
             android:layout_height="40dp"
             android:id="@+id/song_search"
             ></EditText>
+
         <Button
 
             android:padding="5dp"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:id="@+id/searchButton"
-            android:background="@drawable/search_icon"
+            android:background="@drawable/ic_search_black_24dp"
             ></Button>
 
-    </LinearLayout>
+    </LinearLayout>-->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <ListView
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/res_list"></ListView>
+            android:id="@+id/res_list"></androidx.recyclerview.widget.RecyclerView>
 
-    </LinearLayout>
 
 
 </LinearLayout>
