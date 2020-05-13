@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -22,15 +23,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.example.playerx.Adapters.MusicListAdapter;
+import com.example.playerx.MediaPlayer;
 import com.example.playerx.R;
 import com.example.playerx.utils.SongClass;
 
@@ -45,7 +49,7 @@ import java.util.prefs.Preferences;
 import static android.content.Context.ACTIVITY_SERVICE;
 import static android.content.Context.MODE_PRIVATE;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements MusicListAdapter.OnSongClickListener{
 
     public static final String[] PERMISSIONS = {Manifest.permission.READ_EXTERNAL_STORAGE};
     private static final int REQ_PERMISSION = 100;
@@ -93,6 +97,7 @@ public class HomeFragment extends Fragment {
 
         }
 
+
         /*new Thread(new Runnable(){
 
             @Override
@@ -135,7 +140,7 @@ public class HomeFragment extends Fragment {
 
                 }
 
-                musicListAdapter = new MusicListAdapter(getActivity(), items);
+                musicListAdapter = new MusicListAdapter(getActivity(), items,this);
                 musicList.setLayoutManager(layoutManager);
                 musicList.setAdapter(musicListAdapter);
                 musicListAdapter.notifyDataSetChanged();
@@ -157,6 +162,7 @@ public class HomeFragment extends Fragment {
 
         /*ArrayAdapter<String> songAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, items);
         musicList.setAdapter(songAdapter);*/
+
 
         return true;
     }
@@ -223,6 +229,16 @@ public class HomeFragment extends Fragment {
             musicList.setAdapter(adapter);*/
             isPlayerInit = true;
         }
+    }
+/* *****************************************start music player************************************** */
+    @Override
+    public void OnSongClick(int position) {
+        Intent intent=new Intent(getActivity(),MediaPlayer.class);
+        intent.putExtra("song_position",position);
+        startActivity(intent);
+
+
+
     }
 
 

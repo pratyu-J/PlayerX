@@ -14,32 +14,7 @@
     android:id="@+id/toolbar"
     android:background="@color/design_default_color_primary"/>
 
-<!--    <LinearLayout
-        android:padding="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
 
-        <EditText
-
-            android:importantForAutofill="auto"
-            android:padding="5dp"
-            android:layout_width="250dp"
-            android:layout_height="40dp"
-            android:id="@+id/song_search"
-            ></EditText>
-
-        <Button
-
-            android:padding="5dp"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:id="@+id/searchButton"
-            android:background="@drawable/ic_search_black_24dp"
-            ></Button>
-
-    </LinearLayout>-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"

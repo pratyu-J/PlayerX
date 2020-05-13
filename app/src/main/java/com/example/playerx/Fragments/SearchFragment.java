@@ -1,6 +1,7 @@
 package com.example.playerx.Fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 
@@ -26,22 +27,19 @@ import android.widget.Toast;
 
 
 import com.example.playerx.Adapters.MusicListAdapter;
+import com.example.playerx.MediaPlayer;
 import com.example.playerx.R;
 
 
 import static com.example.playerx.Fragments.HomeFragment.musicFiles;
 
 
-public class SearchFragment extends Fragment implements MenuItem.OnActionExpandListener{
-    Button search;
-    EditText song_to_find;
-    String song;
+public class SearchFragment extends Fragment implements MenuItem.OnActionExpandListener, MusicListAdapter.OnSongClickListener {
+
     RecyclerView ResList;
     RecyclerView.LayoutManager layoutManager;
 
-    String[] items;
-    String[] res_songs;
-    int same=0;
+
     MusicListAdapter musicListAdapter;
 
     public SearchFragment() {
@@ -54,11 +52,10 @@ public class SearchFragment extends Fragment implements MenuItem.OnActionExpandL
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_search, container, false);
 
-/*        search = v.findViewById(R.id.searchButton);
-        song_to_find = v.findViewById(R.id.song_search);*/
+
         ResList = v.findViewById(R.id.res_list);
         layoutManager = new LinearLayoutManager(getActivity());
-        musicListAdapter = new MusicListAdapter(getActivity(), HomeFragment.items);
+        musicListAdapter = new MusicListAdapter(getActivity(), HomeFragment.items,this);
         ResList.setLayoutManager(layoutManager);
         ResList.setAdapter(musicListAdapter);
         Toolbar toolbar = v.findViewById(R.id.toolbar);
@@ -67,40 +64,10 @@ public class SearchFragment extends Fragment implements MenuItem.OnActionExpandL
 
         setHasOptionsMenu(true);
 
-        /*items = new String[musicFiles.size()];
-        for (int i = 0; i < musicFiles.size(); i++) {
 
-            items[i] = musicFiles.get(i).getName().toString().replace(".mp3", "");
-
-        }*/
 
         setMenuVisibility(true);
 
-/*        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                song = song_to_find.getText().toString();
-                Toast.makeText(getContext(), "You Searched for:" + song, Toast.LENGTH_SHORT).show();
-                for (int i = 0; i < musicFiles.size(); i++) {
-                    if (isSubstring(song, items[i])) {
-                        same++;
-                    }
-                }
-                res_songs=new String[same];
-
-                for (int i = 0; i < musicFiles.size(); i++) {
-                    int j=0;
-                    if (isSubstring(song, items[i])) {
-                        res_songs[j]=items[i];
-                        j++;
-                    }
-                }
-
-*//*                musicListAdapter = new MusicListAdapter(getActivity(), res_songs);
-                ResList.setAdapter(musicListAdapter);*//*
-
-            }
-        });*/
 
         return v;
     }
@@ -140,27 +107,7 @@ public class SearchFragment extends Fragment implements MenuItem.OnActionExpandL
         return super.onOptionsItemSelected(item);
     }
 
-    static boolean isSubstring(String s1, String s2) {
-        int M = s1.length();
-        int N = s2.length();
-
-        /* A loop to slide pat[] one by one */
-        for (int i = 0; i <= N - M; i++) {
-            int j;
-
-            /* For current index i, check for
-            pattern match */
-            for (j = 0; j < M; j++)
-                if (s2.charAt(i + j) != s1.charAt(j))
-                    break;
-
-            if (j == M)
-                return true;
-        }
-
-        return false;
-    }
-
+   
 
     @Override
     public boolean onMenuItemActionExpand(MenuItem item) {
@@ -173,4 +120,11 @@ public class SearchFragment extends Fragment implements MenuItem.OnActionExpandL
     }
 
 
+    @Override
+    public void OnSongClick(int position) {
+        Intent intent=new Intent(getActivity(),MediaPlayer.class);
+        intent.putExtra("song_position",position);
+        startActivity(intent);
+
+    }
 }
