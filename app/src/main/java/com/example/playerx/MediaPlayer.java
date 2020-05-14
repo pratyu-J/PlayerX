@@ -1,11 +1,13 @@
 package com.example.playerx;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -44,7 +46,7 @@ public class MediaPlayer extends AppCompatActivity {
         playlist=findViewById(R.id.playlist);
         addToPlayList=findViewById(R.id.add_to_playlist);
         seekBar=findViewById(R.id.seek);
-        handler=new Handler();
+
         SongImage.setImageResource(R.drawable.hp3);
 
         selected_song=getIntent().getIntExtra("song_position",0);
@@ -72,7 +74,7 @@ public class MediaPlayer extends AppCompatActivity {
                 }else{
                     mediaPlayer.start();
                     play_pause.setImageResource(R.drawable.ic_pause_black_24dp);
-                    changeseekbar();
+                    //changeseekbar();
                 }
             }
         });
@@ -118,7 +120,10 @@ public class MediaPlayer extends AppCompatActivity {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mediaPlayer.seekTo(progress);
+                if(fromUser) {
+                    mediaPlayer.seekTo(progress);
+                    seekBar.setProgress(progress);
+                }
             }
 
             @Override
@@ -139,6 +144,7 @@ public class MediaPlayer extends AppCompatActivity {
     }
 
     public void startplaying(int song){
+
         songname.setText(getCurr_song(selected_song));
         if(mediaPlayer==null){
             mediaPlayer = android.media.MediaPlayer.create(this, Uri.fromFile(musicFiles.get(song)));
@@ -147,6 +153,11 @@ public class MediaPlayer extends AppCompatActivity {
             mediaPlayer.release();
             mediaPlayer = android.media.MediaPlayer.create(this, Uri.fromFile(musicFiles.get(song)));
         }
+        if( mediaPlayer!=null && !mediaPlayer.isPlaying()) {
+            mediaPlayer.release();
+            mediaPlayer = android.media.MediaPlayer.create(this, Uri.fromFile(musicFiles.get(song)));
+        }
+
 
         mediaPlayer.setOnPreparedListener(new android.media.MediaPlayer.OnPreparedListener() {
             @Override
@@ -154,27 +165,53 @@ public class MediaPlayer extends AppCompatActivity {
                 seekBar.setMax(mediaPlayer.getDuration());
                 mediaPlayer.start();
                 seekBar.setProgress(0);
-                changeseekbar();
+               // changeseekbar();
             }
         });
 
-    }
 
+        handler=new Handler(){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                seekBar.setProgress(msg.what);
+            }
+        };
 
-
-
-    private void changeseekbar() {
-        seekBar.setProgress(mediaPlayer.getCurrentPosition());
-        if(mediaPlayer.isPlaying()){
-            runnable=new Runnable() {
-                @Override
-                public void run() {
-                    changeseekbar();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (mediaPlayer!=null){
+                    try {
+                        if(mediaPlayer.isPlaying()){
+                            Message message=new Message();
+                            message.what=mediaPlayer.getCurrentPosition();
+                            handler.sendMessage(message);
+                            Thread.sleep(1000);
+                        }
+                    }catch (InterruptedException e){
+                        e.printStackTrace();
+                    }
                 }
+            }
+        }).start();
 
-            };
-            handler.postDelayed(runnable,1000);
-        }
     }
+
+
+
+
+//    private void changeseekbar() {
+//        seekBar.setProgress(mediaPlayer.getCurrentPosition());
+//        if(mediaPlayer.isPlaying()){
+//            runnable=new Runnable() {
+//                @Override
+//                public void run() {
+//                    changeseekbar();
+//                }
+//
+//            };
+//            handler.postDelayed(runnable,1000);
+//        }
+//    }
 
 }
