@@ -145,6 +145,7 @@ public class MediaPlayer extends AppCompatActivity {
 
     public void startplaying(int song){
 
+
         songname.setText(getCurr_song(selected_song));
         if(mediaPlayer==null){
             mediaPlayer = android.media.MediaPlayer.create(this, Uri.fromFile(musicFiles.get(song)));
