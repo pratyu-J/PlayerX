@@ -2,6 +2,7 @@ package com.example.playerx.Adapters;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,12 +24,15 @@ import com.example.playerx.utils.SongClass;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static android.webkit.ConsoleMessage.MessageLevel.LOG;
+
 public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.ViewHolder> implements Filterable {
 
     private final Activity context;
     private final ArrayList<SongClass> songname;
     private final ArrayList<SongClass> fullList;
     private final OnSongClickListener onSongClickListener;
+    public static ArrayList<SongClass> likedSongs = new ArrayList<>();
 
     public interface OnSongClickListener{
         void OnSongClick(int position);
@@ -39,7 +44,11 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
         ImageView imageView;
         TextView song;
         TextView info;
+        ImageView likedEmpty;
+        ImageView likedFill;
         LinearLayout listlayout;
+        RelativeLayout relativeHeart;
+
         public ViewHolder(@NonNull View itemView,OnSongClickListener onSongClickListener) {
             super(itemView);
 
@@ -47,6 +56,10 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
             song = itemView.findViewById(R.id.music_info);
             info = itemView.findViewById(R.id.info);
             listlayout=itemView.findViewById(R.id.listlayout);
+            likedEmpty = itemView.findViewById(R.id.like_btn_empty);
+            likedFill = itemView.findViewById(R.id.like_btn_filled);
+            relativeHeart = itemView.findViewById(R.id.relative_heart);
+
             this.onSongClickListener=onSongClickListener;
 
             itemView.setOnClickListener(this);
@@ -65,6 +78,7 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
         this.songname = songname;
         fullList = new ArrayList<>(songname);
         this.onSongClickListener=onSongClickListener;
+
 
     }
 
@@ -128,12 +142,30 @@ Filter exFilter =new Filter() {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MusicListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final MusicListAdapter.ViewHolder holder, final int position) {
         final SongClass songClass = songname.get(position);
 
         holder.song.setText(songClass.getSong());
         holder.info.setText(songClass.getInfo());
         holder.imageView.setImageResource(R.drawable.ic_headset_black_24dp);
+        holder.likedEmpty.setImageResource(R.drawable.favorite_empty);
+        holder.likedFill.setImageResource(R.drawable.ic_favorite_black_24dp);
+        holder.relativeHeart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.likedEmpty.getVisibility() == View.VISIBLE){
+                    holder.likedEmpty.setVisibility(View.GONE);
+                    holder.likedFill.setVisibility(View.VISIBLE);
+                    likedSongs.add(songname.get(position));
+
+                }
+                else{
+                    holder.likedEmpty.setVisibility(View.VISIBLE);
+                    holder.likedFill.setVisibility(View.GONE);
+                    likedSongs.remove(songname.get(position));
+                }
+            }
+        });
     }
 
     @Override

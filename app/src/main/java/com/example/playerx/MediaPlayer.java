@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -50,7 +51,10 @@ public class MediaPlayer extends AppCompatActivity {
         SongImage.setImageResource(R.drawable.hp3);
 
         selected_song=getIntent().getIntExtra("song_position",0);
-        Toast.makeText(this, "You Selected song"+curr_song , Toast.LENGTH_SHORT).show();
+
+        Log.d("SONG POSITION", selected_song + " pos");
+        Toast.makeText(this, " " + selected_song, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "You Selected song"+getCurr_song(selected_song) , Toast.LENGTH_SHORT).show();
 
         startplaying( selected_song);
 
@@ -74,7 +78,7 @@ public class MediaPlayer extends AppCompatActivity {
                 }else{
                     mediaPlayer.start();
                     play_pause.setImageResource(R.drawable.ic_pause_black_24dp);
-                    //changeseekbar();
+
                 }
             }
         });
@@ -147,6 +151,7 @@ public class MediaPlayer extends AppCompatActivity {
 
 
         songname.setText(getCurr_song(selected_song));
+        MainActivity.songDisplay.setText(getCurr_song(selected_song));
         if(mediaPlayer==null){
             mediaPlayer = android.media.MediaPlayer.create(this, Uri.fromFile(musicFiles.get(song)));
         }
@@ -166,10 +171,9 @@ public class MediaPlayer extends AppCompatActivity {
                 seekBar.setMax(mediaPlayer.getDuration());
                 mediaPlayer.start();
                 seekBar.setProgress(0);
-               // changeseekbar();
+
             }
         });
-
 
         handler=new Handler(){
             @Override
@@ -199,20 +203,10 @@ public class MediaPlayer extends AppCompatActivity {
     }
 
 
-
-
-//    private void changeseekbar() {
-//        seekBar.setProgress(mediaPlayer.getCurrentPosition());
-//        if(mediaPlayer.isPlaying()){
-//            runnable=new Runnable() {
-//                @Override
-//                public void run() {
-//                    changeseekbar();
-//                }
-//
-//            };
-//            handler.postDelayed(runnable,1000);
-//        }
-//    }
-
 }
+
+
+
+
+
+

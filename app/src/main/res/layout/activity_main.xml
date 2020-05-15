@@ -14,6 +14,18 @@
         android:id="@+id/frag_container"
         />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:textStyle="bold"
+        android:textSize="22dp"
+        android:text="Song Name"
+        android:textAlignment="center"
+        android:id="@+id/songDisplay"
+        android:clickable="true"
+        android:padding="8dp"/>
+
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav_bar"
         android:layout_width="match_parent"

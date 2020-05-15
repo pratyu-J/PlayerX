@@ -32,6 +32,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.playerx.Adapters.MusicListAdapter;
 import com.example.playerx.MediaPlayer;
@@ -234,10 +235,10 @@ public class HomeFragment extends Fragment implements MusicListAdapter.OnSongCli
     @Override
     public void OnSongClick(int position) {
         Intent intent=new Intent(getActivity(),MediaPlayer.class);
+        Log.d("SONG POSITION", position + " pos");
+        Toast.makeText(getActivity(), " " + position, Toast.LENGTH_SHORT).show();
         intent.putExtra("song_position",position);
         startActivity(intent);
-
-
 
     }
 
