@@ -35,7 +35,7 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
     public static ArrayList<SongClass> likedSongs = new ArrayList<>();
 
     public interface OnSongClickListener{
-        void OnSongClick(int position);
+        void OnSongClick(String name);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -67,7 +67,7 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
 
         @Override
         public void onClick(View v) {
-            onSongClickListener.OnSongClick(getAdapterPosition());
+            onSongClickListener.OnSongClick(this.song.getText().toString());
         }
     }
 
@@ -89,39 +89,39 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.View
     }
 
 
-Filter exFilter =new Filter() {
-    @Override
-    protected FilterResults performFiltering(CharSequence constraint) {
+    Filter exFilter =new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
 
-        ArrayList<SongClass> filterList =new ArrayList<>();
+            ArrayList<SongClass> filterList =new ArrayList<>();
 
-        if(constraint == null || constraint.length()==0){
-            filterList.addAll(fullList);
-        }
-        else{
-            String filterPattern =constraint.toString().toLowerCase().trim();
+            if(constraint == null || constraint.length()==0){
+                filterList.addAll(fullList);
+            }
+            else{
+                String filterPattern =constraint.toString().toLowerCase().trim();
 
-            for(SongClass items: fullList){
-                if(items.getSong().toLowerCase().contains(filterPattern)){
-                    filterList.add(items);
+                for(SongClass items: fullList){
+                    if(items.getSong().toLowerCase().contains(filterPattern)){
+                        filterList.add(items);
+                    }
                 }
             }
-        }
 
             FilterResults res = new FilterResults();
             res.values = filterList;
             return res;
 
 
-    }
+        }
 
-    @Override
-    protected void publishResults(CharSequence constraint, FilterResults results) {
-        songname.clear();
-        songname.addAll((Collection<? extends SongClass>) results.values);
-        notifyDataSetChanged();
-    }
-};
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            songname.clear();
+            songname.addAll((Collection<? extends SongClass>) results.values);
+            notifyDataSetChanged();
+        }
+    };
 
     /*public View getView(int position, View view, ViewGroup parent){
 
@@ -175,3 +175,4 @@ Filter exFilter =new Filter() {
 
 
 }
+

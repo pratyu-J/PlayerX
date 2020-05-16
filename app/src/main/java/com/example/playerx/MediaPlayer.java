@@ -54,7 +54,7 @@ public class MediaPlayer extends AppCompatActivity {
 
         Log.d("SONG POSITION", selected_song + " pos");
         Toast.makeText(this, " " + selected_song, Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "You Selected song"+getCurr_song(selected_song) , Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, "You Selected song"+getCurr_song(selected_song) , Toast.LENGTH_SHORT).show();
 
         startplaying( selected_song);
 
@@ -147,7 +147,7 @@ public class MediaPlayer extends AppCompatActivity {
         return curr_song;
     }
 
-    public void startplaying(int song){
+    /*public void startplaying(int song){
 
 
         songname.setText(getCurr_song(selected_song));
@@ -201,6 +201,61 @@ public class MediaPlayer extends AppCompatActivity {
         }).start();
 
     }
+*/
+
+    public void startplaying(int song){
+        //songname.setText(getCurr_song(selected_song));
+        // MainActivity.songDisplay.setText(getCurr_song(selected_song));
+        if(mediaPlayer==null){
+            mediaPlayer = android.media.MediaPlayer.create(this, Uri.fromFile(musicFiles.get(song)));
+        }
+        if( mediaPlayer!=null && mediaPlayer.isPlaying()) {
+            mediaPlayer.release();
+            mediaPlayer = android.media.MediaPlayer.create(this, Uri.fromFile(musicFiles.get(song)));
+        }
+        if( mediaPlayer!=null && !mediaPlayer.isPlaying()) {
+            mediaPlayer.release();
+            mediaPlayer = android.media.MediaPlayer.create(this, Uri.fromFile(musicFiles.get(song)));
+        }
+
+
+        mediaPlayer.setOnPreparedListener(new android.media.MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(android.media.MediaPlayer mp) {
+                seekBar.setMax(mediaPlayer.getDuration());
+                mediaPlayer.start();
+                seekBar.setProgress(0);
+
+            }
+        });
+
+        handler=new Handler(){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                seekBar.setProgress(msg.what);
+            }
+        };
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (mediaPlayer!=null){
+                    try {
+                        if(mediaPlayer.isPlaying()){
+                            Message message=new Message();
+                            message.what=mediaPlayer.getCurrentPosition();
+                            handler.sendMessage(message);
+                            Thread.sleep(1000);
+                        }
+                    }catch (InterruptedException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+
+    }
+
 
 
 }

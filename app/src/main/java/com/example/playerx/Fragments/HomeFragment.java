@@ -232,7 +232,29 @@ public class HomeFragment extends Fragment implements MusicListAdapter.OnSongCli
         }
     }
 /* *****************************************start music player************************************** */
+
     @Override
+    public void OnSongClick(String s) {
+        int c=0;
+        Intent intent=new Intent(getActivity(),MediaPlayer.class);
+        //Log.d("SONG POSITION", position + " pos");
+        Toast.makeText(getActivity(), " " + s, Toast.LENGTH_SHORT).show();
+        for(File f: musicFiles){
+            c++;
+            if(f.getName().equals(s+".mp3")){
+                Log.d("filename",f.getName() );
+                Log.d("filename", "pos: " + c );
+                break;
+            }
+        }
+        intent.putExtra("song_position", c-1);
+        startActivity(intent);
+
+    }
+
+
+
+    /*@Override
     public void OnSongClick(int position) {
         Intent intent=new Intent(getActivity(),MediaPlayer.class);
         Log.d("SONG POSITION", position + " pos");
@@ -240,7 +262,9 @@ public class HomeFragment extends Fragment implements MusicListAdapter.OnSongCli
         intent.putExtra("song_position",position);
         startActivity(intent);
 
-    }
+    }*/
+
+
 
 
     /*public void revisiting(){
