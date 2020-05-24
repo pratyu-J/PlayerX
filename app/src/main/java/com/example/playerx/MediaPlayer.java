@@ -27,7 +27,7 @@ public class MediaPlayer extends AppCompatActivity {
     TextView songname;
     ImageView SongImage,prev,replay,play_pause,forward,next,playlist,addToPlayList;
     int selected_song;
-    android.media.MediaPlayer mediaPlayer;
+    public static android.media.MediaPlayer mediaPlayer;
     Runnable runnable;
     Handler handler;
     SeekBar seekBar;
@@ -211,13 +211,19 @@ public class MediaPlayer extends AppCompatActivity {
         }
         if( mediaPlayer!=null && mediaPlayer.isPlaying()) {
             mediaPlayer.release();
+            mediaPlayer=null;
             mediaPlayer = android.media.MediaPlayer.create(this, Uri.fromFile(musicFiles.get(song)));
         }
         if( mediaPlayer!=null && !mediaPlayer.isPlaying()) {
             mediaPlayer.release();
+            mediaPlayer=null;
             mediaPlayer = android.media.MediaPlayer.create(this, Uri.fromFile(musicFiles.get(song)));
         }
-
+        if( mediaPlayer!=null) {
+            mediaPlayer.release();
+            mediaPlayer=null;
+            mediaPlayer = android.media.MediaPlayer.create(this, Uri.fromFile(musicFiles.get(song)));
+        }
 
         mediaPlayer.setOnPreparedListener(new android.media.MediaPlayer.OnPreparedListener() {
             @Override
@@ -247,7 +253,7 @@ public class MediaPlayer extends AppCompatActivity {
                             handler.sendMessage(message);
                             Thread.sleep(1000);
                         }
-                    }catch (InterruptedException e){
+                    }catch (Exception e){
                         e.printStackTrace();
                     }
                 }

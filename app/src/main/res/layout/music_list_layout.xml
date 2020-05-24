@@ -1,86 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:id="@+id/listlayout"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/custom_text_view"
-        android:layout_margin="5dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_margin="3dp"
-            android:id="@+id/songimage"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_headset_black_24dp"/>
-
+        android:layout_margin="4dp"
+        app:cardCornerRadius="8dp"
+        android:layout_height="wrap_content">
         <LinearLayout
+            android:id="@+id/listlayout"
             android:layout_width="match_parent"
+            android:padding="8dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:background="@drawable/custom_text_view"
+            android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/music_info"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="8dp"
-                android:textColor="#0744e3"
-                android:text="song"
-                android:textSize="16sp"
-                android:hint="MusicName"
-                android:padding="8dp"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/info"
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_margin="3dp"
+                android:id="@+id/songimage"
                 android:layout_gravity="center_vertical"
-                android:textColor="#67AE80"
-                android:padding="3dp"
-                android:text="INFO"/>
+                android:src="@drawable/ic_headset_black_24dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/music_info"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold"
+                    android:text="song"
+                    android:textSize="16sp"
+                    android:hint="MusicName"
+                    android:padding="8dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/info"
+                    android:layout_margin="3dp"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:padding="3dp"
+                    android:text="INFO"/>
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/relative_heart"
+                android:clickable="true"
+                >
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/favorite_empty"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/like_btn_empty"
+                    android:padding="5dp"/>
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_favorite_black_24dp"
+                    android:layout_centerVertical="true"
+                    android:visibility="gone"
+                    android:id="@+id/like_btn_filled"
+                    android:padding="5dp"/>
+
+
+            </RelativeLayout>
+
+
+
 
 
         </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/relative_heart"
-            android:clickable="true"
-            >
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/favorite_empty"
-                android:layout_centerVertical="true"
-                android:id="@+id/like_btn_empty"
-                android:padding="5dp"/>
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_favorite_black_24dp"
-                android:layout_centerVertical="true"
-                android:visibility="gone"
-                android:id="@+id/like_btn_filled"
-                android:padding="5dp"/>
-
-
-        </RelativeLayout>
-
-
-
-
-
-    </LinearLayout>
 
 
 </LinearLayout>
